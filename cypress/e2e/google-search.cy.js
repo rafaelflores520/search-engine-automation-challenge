@@ -16,8 +16,6 @@ describe("Search on Google", function () {
           cy.task("setHref", href);
         });
       cy.get("@firstResult").click();
-    });
-    it("It is at the request Webpage", function () {
       cy.task("getHref").then((href) => {
         cy.origin(href, { args: query }, function (query) {
           cy.url().should("include", query.q.toLowerCase());
