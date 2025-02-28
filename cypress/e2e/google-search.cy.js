@@ -10,7 +10,19 @@ describe("Search on Google", function () {
         .should("exist")
         .first()
         .as("firstResult");
+      cy.get("@firstResult")
+        .invoke("attr", "href")
+        .then((href) => {
+          cy.task("setHref", href);
+        });
       cy.get("@firstResult").click();
+    });
+    it("It is at the request Webpage", function () {
+      cy.task("getHref").then((href) => {
+        cy.origin(href, { args: query }, function (query) {
+          cy.url().should("include", query.q.toLowerCase());
+        });
+      });
     });
   });
 });
